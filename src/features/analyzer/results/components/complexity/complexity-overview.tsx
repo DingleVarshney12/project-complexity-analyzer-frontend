@@ -1,20 +1,23 @@
 import ComplexityLegend from "./complexity-legend";
 import ComplexityScore from "./complexity-score";
 import type { ProjectResponse } from "@/lib/types";
+import dynamic from "next/dynamic";
 
 interface ComplexityOverviewProps {
   result: ProjectResponse;
 }
 
+const DownloadReport = dynamic(() => import("../../download-report"), {
+  ssr: false,
+});
 export default function ComplexityOverview({
   result,
 }: ComplexityOverviewProps) {
   const { complexity, score, confidence, factors } = result;
 
-  const primaryChallenge =
-    factors
-      .filter((factor) => factor.contribution > 0)
-      .sort((a, b) => b.contribution - a.contribution)[0];
+  const primaryChallenge = factors
+    .filter((factor) => factor.contribution > 0)
+    .sort((a, b) => b.contribution - a.contribution)[0];
 
   const developmentEffort =
     complexity === "Easy"
@@ -54,14 +57,20 @@ export default function ComplexityOverview({
 
             {/* Explanation */}
             <div className="p-8 lg:p-12">
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-blue-400">
-                Overall Complexity
-              </p>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-sm font-medium uppercase tracking-[0.18em] text-blue-400">
+                    Overall Complexity
+                  </p>
 
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                Your project has a {complexity.toLowerCase()} level of
-                complexity.
-              </h2>
+                  <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                    Your project has a {complexity.toLowerCase()} level of
+                    complexity.
+                  </h2>
+                </div>
+
+                <DownloadReport result={result} />
+              </div>
 
               <p className="mt-4 max-w-xl leading-7 text-muted-foreground">
                 {complexityDescription}
@@ -87,9 +96,7 @@ export default function ComplexityOverview({
                     Development Effort
                   </p>
 
-                  <p className="mt-2 font-medium">
-                    {developmentEffort}
-                  </p>
+                  <p className="mt-2 font-medium">{developmentEffort}</p>
 
                   <p className="mt-1 text-sm leading-6 text-muted-foreground">
                     {complexity === "Easy"

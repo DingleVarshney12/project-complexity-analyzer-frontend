@@ -26,6 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Project Complexity Analyzer",
   description: "Analyze your project's technical complexity with AI.",
+  
 };
 
 export default function RootLayout({

@@ -1,9 +1,12 @@
 import Link from "next/link";
 import {
   Heart,
-  Sparkles,
 } from "lucide-react";
-import {COMPANY_NAME} from "@/lib/constant"
+import {
+  COMPANY_NAME
+} from "@/lib/constant"
+import {Logo} from "../shared/logo";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/6 bg-[#050914]/80">
@@ -16,7 +19,7 @@ export default function Footer() {
               className="group inline-flex items-center gap-2.5"
             >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-blue-400/10 bg-blue-400/10 transition-colors group-hover:bg-blue-400/15">
-                <Sparkles className="h-4 w-4 text-blue-400" />
+                <Logo />
               </div>
 
               <span className="text-sm font-semibold">

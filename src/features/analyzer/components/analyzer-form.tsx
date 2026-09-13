@@ -122,7 +122,7 @@ export default function AnalyzerForm() {
       setActiveStep(5);
 
       sessionStorage.setItem(
-        "project-analysis-result",
+        `project-analysis-result`,
         JSON.stringify(result),
       );
 

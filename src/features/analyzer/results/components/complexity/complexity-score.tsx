@@ -13,19 +13,23 @@ const complexityStyles: Record<
   {
     label: string;
     className: string;
+    color: string;
   }
 > = {
   Easy: {
     label: "EASY",
     className: "border-emerald-400/20 bg-emerald-400/10 text-emerald-400",
+    color: "#34d399",
   },
   Medium: {
     label: "MEDIUM",
     className: "border-amber-400/20 bg-amber-400/10 text-amber-400",
+    color: "#fbbf24",
   },
   Hard: {
     label: "HARD",
     className: "border-red-400/20 bg-red-400/10 text-red-400",
+    color: "#f87171",
   },
 };
 
@@ -34,9 +38,13 @@ export default function ComplexityScore({
   confidence,
   complexity,
 }: ComplexityScoreProps) {
-  const circumference = 2 * Math.PI * 92;
+  const radius = 92;
+  const circumference = 2 * Math.PI * radius;
+
+  const normalizedScore = Math.min(Math.max(score, 0), 100);
+
   const progress =
-    circumference - (Math.min(Math.max(score, 0), 100) / 100) * circumference;
+    circumference - (normalizedScore / 100) * circumference;
 
   const complexityStyle = complexityStyles[complexity];
 
@@ -48,51 +56,51 @@ export default function ComplexityScore({
           viewBox="0 0 220 220"
           aria-label={`Complexity score ${score} out of 100`}
         >
+          {/* Background Circle */}
           <circle
             cx="110"
             cy="110"
-            r="92"
+            r={radius}
             fill="none"
             stroke="currentColor"
             strokeWidth="12"
             className="text-white/6"
           />
 
+          {/* Progress Circle */}
           <circle
             cx="110"
             cy="110"
-            r="92"
+            r={radius}
             fill="none"
-            stroke="url(#scoreGradient)"
+            stroke={complexityStyle.color}
             strokeWidth="12"
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={progress}
+            className="transition-all duration-700 ease-out"
+            style={{
+              filter: `drop-shadow(0 0 8px ${complexityStyle.color}55)`,
+            }}
           />
-
-          <defs>
-            <linearGradient
-              id="scoreGradient"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <stop offset="0%" className="[stop-color:#3b82f6]" />
-              <stop offset="100%" className="[stop-color:#8b5cf6]" />
-            </linearGradient>
-          </defs>
         </svg>
 
+        {/* Score */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-6xl font-bold tracking-tight text-white">
+          <span
+            className="text-6xl font-bold tracking-tight"
+            style={{ color: complexityStyle.color }}
+          >
             {score}
           </span>
 
-          <span className="text-sm text-muted-foreground">/ 100</span>
+          <span className="text-sm text-muted-foreground">
+            / 100
+          </span>
         </div>
       </div>
 
+      {/* Complexity Badge */}
       <div
         className={`mt-2 rounded-full border px-5 py-1.5 ${complexityStyle.className}`}
       >
@@ -101,6 +109,7 @@ export default function ComplexityScore({
         </span>
       </div>
 
+      {/* AI Confidence */}
       <div className="mt-6 flex items-center gap-2 rounded-lg border border-white/6 bg-white/2 px-4 py-2.5">
         <ShieldCheck className="h-4 w-4 text-blue-400" />
 
@@ -113,6 +122,7 @@ export default function ComplexityScore({
         </span>
       </div>
 
+      {/* AI Assessment */}
       <div className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
         <BrainCircuit className="h-4 w-4 text-blue-400" />
         AI-generated complexity assessment

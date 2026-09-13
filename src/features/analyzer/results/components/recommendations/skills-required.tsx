@@ -24,7 +24,7 @@ const skillIcons: Record<string, LucideIcon> = {
   "rest api development": Network,
   "api integration": Network,
   "payment integration": Network,
-  authentication: KeyRound,
+  "authentication": KeyRound,
   "system design": Users,
   "cloud deployment": Cloud,
 };
@@ -38,7 +38,7 @@ const skillDescriptions: Record<string, string> = {
     "Design efficient data models and persistent application storage.",
   "database management":
     "Design and manage persistent application data.",
-  caching:
+  "caching":
     "Implement caching strategies to improve performance and scalability.",
   "rest api development":
     "Design and implement APIs for communication between application services.",
@@ -46,7 +46,7 @@ const skillDescriptions: Record<string, string> = {
     "Connect the application with external services.",
   "payment integration":
     "Integrate secure payment processing and transaction workflows.",
-  authentication:
+  "authentication":
     "Implement secure identity and authorization flows.",
   "system design":
     "Design scalable architecture across multiple application components.",

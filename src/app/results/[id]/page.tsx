@@ -26,10 +26,9 @@ export default function ResultsPage({
   params,
 }: ResultsPageProps) {
   const [result, setResult] = useState<ProjectResponse | null>(null);
-
   useEffect(() => {
     const storedResult = sessionStorage.getItem(
-      "project-analysis-result",
+      `project-analysis-result`,
     );
 
     if (!storedResult) return;

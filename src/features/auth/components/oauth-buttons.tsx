@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {redirect} from "next/navigation"
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 function getApiUrl() {
@@ -49,13 +48,12 @@ function GoogleIcon() {
 export default function OAuthButtons() {
 
   const handleGoogleLogin = () => {
-    redirect(`${getApiUrl()}/auth/google`);
-  };
+  window.location.assign(`${getApiUrl()}/auth/google`);
+};
 
-  const handleGithubLogin = () => {
-    redirect(`${getApiUrl()}/auth/github`);
-  };
-
+const handleGithubLogin = () => {
+  window.location.assign(`${getApiUrl()}/auth/github`);
+};
   return (
     <div className="space-y-3">
       <Button

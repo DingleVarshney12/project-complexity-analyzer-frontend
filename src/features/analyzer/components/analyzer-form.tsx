@@ -2,12 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  ArrowRight,
-  ChevronDown,
-  Sparkles,
-} from "lucide-react";
-
+import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import { createProject } from "@/lib/api/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -58,9 +54,7 @@ export default function AnalyzerForm() {
     }));
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!isFormValid) return;
@@ -68,77 +62,45 @@ export default function AnalyzerForm() {
     setIsAnalyzing(true);
     setActiveStep(1);
 
-    try {
-      // Step 1
-      setActiveStep(1);
+   try {
+  setActiveStep(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 700));
+  await new Promise((resolve) => setTimeout(resolve, 700));
 
-      // Step 2
-      setActiveStep(2);
+  setActiveStep(2);
 
-      await new Promise((resolve) => setTimeout(resolve, 700));
+  await new Promise((resolve) => setTimeout(resolve, 700));
 
-      // Step 3
-      setActiveStep(3);
+  setActiveStep(3);
 
-      // API request
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/analyze`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            project_description: form.description,
-            main_features: form.features,
-            project_input: form.input,
-            project_output: form.output,
-            platform: form.platform,
-            technologies: form.technologies,
-          }),
-        },
-      );
+  const result = await createProject({
+    projectDescription: form.description,
+    mainFeatures: form.features,
+    projectInput: form.input,
+    projectOutput: form.output,
+    platform: form.platform,
+    technologies: form.technologies,
+  });
 
-      // API error
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+  setActiveStep(4);
 
-        throw new Error(
-          errorData?.detail || "Failed to analyze the project.",
-        );
-      }
+  await new Promise((resolve) => setTimeout(resolve, 700));
 
-      // Backend result
-      const result = await response.json();
+  setActiveStep(5);
 
-      // Step 4
-      setActiveStep(4);
+  router.push(`/results/${result.uid}`);
+} catch (error) {
+  console.error("Project analysis failed:", error);
 
-      await new Promise((resolve) => setTimeout(resolve, 700));
+  setIsAnalyzing(false);
+  setActiveStep(1);
 
-      // Complete
-      setActiveStep(5);
-
-      sessionStorage.setItem(
-        `project-analysis-result`,
-        JSON.stringify(result),
-      );
-
-      router.push(`/results/${result.uid}`);
-    } catch (error) {
-      console.error("Project analysis failed:", error);
-
-      setIsAnalyzing(false);
-      setActiveStep(1);
-
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong while analyzing your project.",
-      );
-    }
+  alert(
+    error instanceof Error
+      ? error.message
+      : "Something went wrong while analyzing your project.",
+  );
+}
   };
 
   const isFormValid =
@@ -174,14 +136,11 @@ export default function AnalyzerForm() {
   return (
     <section className="relative px-5 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-
         {/* Main Card */}
         <Card className="overflow-hidden glass-card-strong">
-
           {/* Header */}
           <CardHeader className="border-b border-blue-200/10 px-5 py-5 sm:px-7">
             <div className="flex items-start gap-3">
-
               <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-cyan-400/20 bg-cyan-400/10">
                 <Sparkles className="h-4 w-4 text-cyan-400" />
               </div>
@@ -196,20 +155,14 @@ export default function AnalyzerForm() {
                   complexity analysis.
                 </CardDescription>
               </div>
-
             </div>
           </CardHeader>
 
           {/* Form */}
           <CardContent className="p-5 sm:p-7">
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-7"
-            >
-
+            <form onSubmit={handleSubmit} className="space-y-7">
               {/* Description + Features */}
               <div className="grid gap-6 lg:grid-cols-2">
-
                 {/* Description */}
                 <div className="grid gap-3">
                   <Label htmlFor="project-description">
@@ -219,9 +172,7 @@ export default function AnalyzerForm() {
                   <Textarea
                     id="project-description"
                     value={form.description}
-                    onChange={(e) =>
-                      updateField("description", e.target.value)
-                    }
+                    onChange={(e) => updateField("description", e.target.value)}
                     placeholder="Describe your project in detail..."
                     maxLength={1000}
                     rows={6}
@@ -237,16 +188,12 @@ export default function AnalyzerForm() {
 
                 {/* Features */}
                 <div className="grid gap-3">
-                  <Label htmlFor="main-features">
-                    Main Features
-                  </Label>
+                  <Label htmlFor="main-features">Main Features</Label>
 
                   <Textarea
                     id="main-features"
                     value={form.features}
-                    onChange={(e) =>
-                      updateField("features", e.target.value)
-                    }
+                    onChange={(e) => updateField("features", e.target.value)}
                     placeholder={`List the major features of your project...
 
 Example:
@@ -265,24 +212,18 @@ Payment integration`}
                     </span>
                   </div>
                 </div>
-
               </div>
 
               {/* Input + Output */}
               <div className="grid gap-6 lg:grid-cols-2">
-
                 {/* Input */}
                 <div className="grid gap-3">
-                  <Label htmlFor="project-input">
-                    Project Input
-                  </Label>
+                  <Label htmlFor="project-input">Project Input</Label>
 
                   <Textarea
                     id="project-input"
                     value={form.input}
-                    onChange={(e) =>
-                      updateField("input", e.target.value)
-                    }
+                    onChange={(e) => updateField("input", e.target.value)}
                     placeholder={`What data does your project receive?
 
 Example:
@@ -304,16 +245,12 @@ Search queries`}
 
                 {/* Output */}
                 <div className="grid gap-3">
-                  <Label htmlFor="project-output">
-                    Project Output
-                  </Label>
+                  <Label htmlFor="project-output">Project Output</Label>
 
                   <Textarea
                     id="project-output"
                     value={form.output}
-                    onChange={(e) =>
-                      updateField("output", e.target.value)
-                    }
+                    onChange={(e) => updateField("output", e.target.value)}
                     placeholder={`What does your project produce?
 
 Example:
@@ -332,7 +269,6 @@ Delivery tracking`}
                     </span>
                   </div>
                 </div>
-
               </div>
 
               {/* Divider */}
@@ -344,35 +280,32 @@ Delivery tracking`}
                 onOpenChange={setShowAdditional}
               >
                 <CollapsibleTrigger
-                    type="button"
-                    className="flex h-auto w-full justify-between rounded-lg px-2 py-2 text-left hover:bg-blue-400/5"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">
-                        Additional Information
-                      </p>
+                  type="button"
+                  className="flex h-auto w-full justify-between rounded-lg px-2 py-2 text-left hover:bg-blue-400/5"
+                >
+                  <div>
+                    <p className="text-sm font-medium">
+                      Additional Information
+                    </p>
 
-                      <p className="mt-0.5 text-xs text-muted-foreground">
-                        Optional — provide your platform and technology
-                        preferences.
-                      </p>
-                    </div>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      Optional — provide your platform and technology
+                      preferences.
+                    </p>
+                  </div>
 
-                    <ChevronDown
-                      className={`h-4 w-4 text-muted-foreground transition-transform ${
-                        showAdditional ? "rotate-180" : ""
-                      }`}
-                    />
+                  <ChevronDown
+                    className={`h-4 w-4 text-muted-foreground transition-transform ${
+                      showAdditional ? "rotate-180" : ""
+                    }`}
+                  />
                 </CollapsibleTrigger>
 
                 <CollapsibleContent>
                   <div className="mt-5 grid gap-5 rounded-xl border border-blue-300/10 bg-blue-950/10 p-4 sm:p-5 lg:grid-cols-2">
-
                     {/* Platform */}
                     <div className="grid gap-3">
-                      <Label htmlFor="platform">
-                        Platform
-                      </Label>
+                      <Label htmlFor="platform">Platform</Label>
 
                       <Select
                         value={form.platform}
@@ -380,64 +313,46 @@ Delivery tracking`}
                           updateField("platform", value ?? "")
                         }
                       >
-                        <SelectTrigger
-                          id="platform"
-                          className="w-full"
-                        >
+                        <SelectTrigger id="platform" className="w-full">
                           <SelectValue placeholder="Select platform" />
                         </SelectTrigger>
 
                         <SelectContent>
-                          <SelectItem value="web">
-                            Web Application
-                          </SelectItem>
+                          <SelectItem value="web">Web Application</SelectItem>
 
                           <SelectItem value="mobile">
                             Mobile Application
                           </SelectItem>
 
-                          <SelectItem value="desktop">
-                            Desktop
-                          </SelectItem>
+                          <SelectItem value="desktop">Desktop</SelectItem>
 
-                          <SelectItem value="api">
-                            API
-                          </SelectItem>
+                          <SelectItem value="api">API</SelectItem>
 
-                          <SelectItem value="other">
-                            Other
-                          </SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     {/* Technologies */}
                     <div className="grid gap-3">
-                      <Label htmlFor="technologies">
-                        Technologies
-                      </Label>
+                      <Label htmlFor="technologies">Technologies</Label>
 
                       <Input
                         id="technologies"
                         type="text"
                         value={form.technologies}
                         onChange={(e) =>
-                          updateField(
-                            "technologies",
-                            e.target.value,
-                          )
+                          updateField("technologies", e.target.value)
                         }
                         placeholder="e.g. Next.js, Node.js, PostgreSQL, Redis"
                       />
                     </div>
-
                   </div>
                 </CollapsibleContent>
               </Collapsible>
 
               {/* Actions */}
               <div className="flex flex-col items-center gap-3 pt-1 sm:flex-row sm:justify-end">
-
                 <p className="order-2 text-[11px] text-muted-foreground sm:order-1">
                   Analysis usually takes a few seconds.
                 </p>
@@ -445,14 +360,12 @@ Delivery tracking`}
                 <Button
                   type="submit"
                   disabled={!isFormValid}
-                  className="order-1 min-w-42.5 sm:order-2 p-4"
+                  className="order-1 min-w-42.5 sm:order-2 p-4 btn-primary "
                 >
                   Analyze Project
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-
               </div>
-
             </form>
           </CardContent>
         </Card>
@@ -464,7 +377,6 @@ Delivery tracking`}
             analysis.
           </p>
         </div>
-
       </div>
     </section>
   );

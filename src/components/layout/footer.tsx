@@ -1,11 +1,7 @@
 import Link from "next/link";
-import {
-  Heart,
-} from "lucide-react";
-import {
-  COMPANY_NAME
-} from "@/lib/constant"
-import {Logo} from "../shared/logo";
+import { Heart } from "lucide-react";
+import { COMPANY_NAME } from "@/lib/constant";
+import { Logo } from "../shared/logo";
 
 export default function Footer() {
   return (
@@ -14,17 +10,12 @@ export default function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           {/* Brand */}
           <div>
-            <Link
-              href="/"
-              className="group inline-flex items-center gap-2.5"
-            >
+            <Link href="/" className="group inline-flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-blue-400/10 bg-blue-400/10 transition-colors group-hover:bg-blue-400/15">
                 <Logo />
               </div>
 
-              <span className="text-sm font-semibold">
-                {COMPANY_NAME}
-              </span>
+              <span className="text-sm font-semibold">{COMPANY_NAME}</span>
             </Link>
 
             <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
@@ -74,8 +65,8 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} Project Complexity Analyzer. All
-            rights reserved.
+            © {new Date().getFullYear()} Project Complexity Analyzer. All rights
+            reserved.
           </p>
 
           <p className="inline-flex items-center gap-1.5">

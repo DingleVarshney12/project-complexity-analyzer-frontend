@@ -43,8 +43,7 @@ export default function ComplexityScore({
 
   const normalizedScore = Math.min(Math.max(score, 0), 100);
 
-  const progress =
-    circumference - (normalizedScore / 100) * circumference;
+  const progress = circumference - (normalizedScore / 100) * circumference;
 
   const complexityStyle = complexityStyles[complexity];
 
@@ -94,9 +93,7 @@ export default function ComplexityScore({
             {score}
           </span>
 
-          <span className="text-sm text-muted-foreground">
-            / 100
-          </span>
+          <span className="text-sm text-muted-foreground">/ 100</span>
         </div>
       </div>
 
@@ -113,13 +110,9 @@ export default function ComplexityScore({
       <div className="mt-6 flex items-center gap-2 rounded-lg border border-white/6 bg-white/2 px-4 py-2.5">
         <ShieldCheck className="h-4 w-4 text-blue-400" />
 
-        <span className="text-sm text-muted-foreground">
-          AI Confidence
-        </span>
+        <span className="text-sm text-muted-foreground">AI Confidence</span>
 
-        <span className="text-sm font-semibold text-white">
-          {confidence}%
-        </span>
+        <span className="text-sm font-semibold text-white">{confidence}%</span>
       </div>
 
       {/* AI Assessment */}

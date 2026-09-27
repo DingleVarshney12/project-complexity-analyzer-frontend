@@ -32,13 +32,9 @@ export default function ComplexityLegend() {
       <div className="flex flex-wrap gap-5">
         {levels.map((level) => (
           <div key={level.label} className="flex items-center gap-2">
-            <span
-              className={`h-2.5 w-2.5 rounded-full ${level.className}`}
-            />
+            <span className={`h-2.5 w-2.5 rounded-full ${level.className}`} />
 
-            <span className="text-sm text-muted-foreground">
-              {level.label}
-            </span>
+            <span className="text-sm text-muted-foreground">{level.label}</span>
 
             <span className="text-xs text-muted-foreground/60">
               {level.range}

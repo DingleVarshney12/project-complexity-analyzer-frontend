@@ -36,17 +36,14 @@ const factorDescriptions: Record<
     "External APIs and systems need to communicate reliably with the application.",
   scope:
     "The project contains multiple features and workflows that increase the overall implementation scope.",
-  data:
-    "The project involves meaningful data relationships, storage, and processing requirements.",
+  data: "The project involves meaningful data relationships, storage, and processing requirements.",
   security:
     "The project requires security controls around authentication, authorization, and data protection.",
   external_services:
     "External services introduce additional integration, reliability, and operational considerations.",
 };
 
-export default function ComplexityFactors({
-  factors,
-}: ComplexityFactorsProps) {
+export default function ComplexityFactors({ factors }: ComplexityFactorsProps) {
   return (
     <section className="px-5 pb-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -78,9 +75,7 @@ export default function ComplexityFactors({
                     <Icon className="h-5 w-5 text-purple-400" />
                   </div>
 
-                  <h3 className="mt-4 font-semibold">
-                    {factor.name}
-                  </h3>
+                  <h3 className="mt-4 font-semibold">{factor.name}</h3>
 
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {factorDescriptions[factor.type]}

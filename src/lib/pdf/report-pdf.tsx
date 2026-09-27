@@ -704,7 +704,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
             </Text>
 
             <Text style={styles.complexityDescription}>
-              Based on the project's technical requirements,
+              Based on the project&apos;s technical requirements,
               functional scope, integrations, data handling,
               security considerations, and external services.
             </Text>
@@ -850,7 +850,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
           </Text>
 
           <Text style={styles.sectionDescription}>
-            Contribution of each dimension to the project's
+            Contribution of each dimension to the project&apos;s
             overall complexity score.
           </Text>
 
@@ -1049,7 +1049,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
             <Text style={styles.sectionDescription}>
               Main factors considered when determining the
-              project's overall complexity.
+              project&apos;s overall complexity.
             </Text>
 
             {result.reasons.map((reason, index) => (

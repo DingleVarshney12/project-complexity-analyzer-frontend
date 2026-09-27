@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  BrainCircuit,
-  Check,
-  Circle,
-  Loader2,
-  Sparkles,
-} from "lucide-react";
+import { BrainCircuit, Check, Circle, Loader2, Sparkles } from "lucide-react";
 
 type AnalysisStep = {
   id: number;
@@ -36,12 +30,9 @@ interface AnalysisLoadingProps {
   activeStep: number;
 }
 
-export default function AnalysisLoading({
-  activeStep,
-}: AnalysisLoadingProps) {
+export default function AnalysisLoading({ activeStep }: AnalysisLoadingProps) {
   return (
     <div className="relative min-h-155 overflow-hidden">
-
       {/* Background glows */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-105 w-105 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/[0.07] blur-[120px]" />
 
@@ -49,10 +40,8 @@ export default function AnalysisLoading({
 
       {/* Content */}
       <div className="relative flex min-h-155 flex-col items-center justify-center px-5">
-
         {/* AI Orb */}
         <div className="relative mb-9 flex h-28 w-28 items-center justify-center">
-
           {/* Outer rotating ring */}
           <div className="absolute inset-0 animate-[spin_8s_linear_infinite] rounded-full border border-blue-400/20 border-t-blue-400/70" />
 
@@ -75,7 +64,6 @@ export default function AnalysisLoading({
 
         {/* Heading */}
         <div className="text-center">
-
           <div className="mb-3 flex items-center justify-center gap-2">
             <Sparkles className="h-4 w-4 text-blue-400" />
 
@@ -89,21 +77,16 @@ export default function AnalysisLoading({
           </h2>
 
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-500">
-            Our AI is examining your project structure,
-            technical requirements, and potential complexity.
+            Our AI is examining your project structure, technical requirements,
+            and potential complexity.
           </p>
-
         </div>
 
         {/* Steps */}
         <div className="mt-9 w-full max-w-md">
-
           <div className="glass-card overflow-hidden p-4 sm:p-5">
-
             <div className="space-y-1">
-
               {steps.map((step) => {
-
                 /*
                  * activeStep is 1-based:
                  *
@@ -124,15 +107,11 @@ export default function AnalysisLoading({
                   <div
                     key={step.id}
                     className={`flex items-center gap-3 rounded-lg px-3 py-3 transition-all duration-500 ${
-                      isActive
-                        ? "bg-blue-500/[0.07]"
-                        : ""
+                      isActive ? "bg-blue-500/[0.07]" : ""
                     }`}
                   >
-
                     {/* Status */}
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center">
-
                       {/* Completed */}
                       {isCompleted && (
                         <div className="flex h-6 w-6 items-center justify-center rounded-full border border-blue-400/20 bg-blue-400/10 transition-all duration-500">
@@ -143,13 +122,11 @@ export default function AnalysisLoading({
                       {/* Active */}
                       {isActive && (
                         <div className="relative flex h-6 w-6 items-center justify-center">
-
                           <div className="absolute inset-0 animate-ping rounded-full bg-blue-400/10" />
 
                           <div className="relative flex h-6 w-6 items-center justify-center rounded-full border border-blue-400/30 bg-blue-400/10">
                             <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-400" />
                           </div>
-
                         </div>
                       )}
 
@@ -157,7 +134,6 @@ export default function AnalysisLoading({
                       {isPending && (
                         <Circle className="h-4 w-4 text-slate-700 transition-colors duration-500" />
                       )}
-
                     </div>
 
                     {/* Label */}
@@ -186,21 +162,17 @@ export default function AnalysisLoading({
                         Done
                       </span>
                     )}
-
                   </div>
                 );
               })}
-
             </div>
           </div>
-
         </div>
 
         {/* Bottom message */}
         <p className="mt-5 text-center text-[11px] text-slate-600">
           This usually takes a few seconds.
         </p>
-
       </div>
     </div>
   );

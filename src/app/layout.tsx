@@ -3,8 +3,8 @@ import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-
-
+import { Toaster } from "@/components/ui/toast";
+import { AuthProvider } from "@/features/auth/context/auth-context";
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
@@ -26,7 +26,6 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Project Complexity Analyzer",
   description: "Analyze your project's technical complexity with AI.",
-  
 };
 
 export default function RootLayout({
@@ -39,11 +38,13 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       >
-      <Navbar/>
+        <AuthProvider>
+          <Navbar />
 
-        {children}
-
-        <Footer/>
+          {children}
+          <Toaster />
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

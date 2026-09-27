@@ -215,54 +215,83 @@
   .glass-card {
     @apply rounded-xl;
 
+    position: relative;
+    isolation: isolate;
+
     background: linear-gradient(
       135deg,
-      rgba(20, 30, 58, 0.72),
-      rgba(12, 19, 40, 0.62)
+      rgba(27, 39, 72, 0.78),
+      rgba(12, 19, 40, 0.72)
     );
 
-    border: 1px solid rgba(120, 150, 220, 0.14);
+    border: 1px solid rgba(148, 163, 184, 0.22);
 
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      inset 0 1px 0 rgba(255, 255, 255, 0.025);
+      0 8px 32px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.055),
+      inset 0 0 0 1px rgba(59, 130, 246, 0.025);
 
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 
     transition:
-      border-color 200ms ease,
-      box-shadow 200ms ease,
-      transform 200ms ease;
+      border-color 220ms ease,
+      box-shadow 220ms ease,
+      transform 220ms ease;
   }
 
   .glass-card:hover {
-    border-color: rgba(96, 165, 250, 0.22);
+    border-color: rgba(129, 140, 248, 0.38);
 
     box-shadow:
-      0 10px 40px rgba(0, 0, 0, 0.3),
-      0 0 30px rgba(59, 130, 246, 0.04);
+      0 12px 42px rgba(0, 0, 0, 0.32),
+      0 0 0 1px rgba(96, 165, 250, 0.035),
+      0 0 28px rgba(59, 130, 246, 0.055),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+    transform: translateY(-1px);
   }
 
   /* -------------------------
-     Strong Glass Card
-     ------------------------- */
+   Strong Glass Card
+   ------------------------- */
 
   .glass-card-strong {
     @apply rounded-xl;
 
-    background: rgba(15, 25, 50, 0.82);
+    position: relative;
+    isolation: isolate;
 
-    border: 1px solid rgba(120, 150, 220, 0.18);
+    background: linear-gradient(
+      145deg,
+      rgba(22, 34, 65, 0.88),
+      rgba(10, 17, 36, 0.84)
+    );
+
+    border: 1px solid rgba(148, 163, 184, 0.26);
 
     box-shadow:
-      0 12px 40px rgba(0, 0, 0, 0.32),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      0 12px 42px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.065),
+      inset 0 0 0 1px rgba(96, 165, 250, 0.025);
 
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    transition:
+      border-color 220ms ease,
+      box-shadow 220ms ease;
   }
 
+  .glass-card-strong:hover {
+    border-color: rgba(129, 140, 248, 0.42);
+
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(96, 165, 250, 0.04),
+      0 0 32px rgba(99, 102, 241, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.075);
+  }
   /* -------------------------
      Glass Input
      ------------------------- */

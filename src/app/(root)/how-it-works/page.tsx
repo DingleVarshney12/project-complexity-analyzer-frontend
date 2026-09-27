@@ -52,20 +52,15 @@ export default function HowItWorksPage() {
     <main className="min-h-screen">
       <section className="px-5 pb-20 pt-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-
           <div className="mx-auto max-w-3xl text-center">
-
             {/* Existing CSS kept */}
-            <Badge
-              className="status-badge mx-auto mb-5 inline-flex h-auto items-center gap-2"
-            >
+            <Badge className="status-badge mx-auto mb-5 inline-flex h-auto items-center gap-2">
               <Sparkles className="h-3.5 w-3.5" />
               Simple AI Workflow
             </Badge>
 
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl ">
-              How It{" "}
-              <span className="gradient-text">Works</span>
+              How It <span className="gradient-text">Works</span>
             </h1>
 
             <p className="mt-5 text-base leading-7 text-muted-foreground sm:text-lg">
@@ -84,14 +79,11 @@ export default function HowItWorksPage() {
                   className="glass-card overflow-hidden p-0"
                 >
                   <CardContent className="p-7">
-
                     <div className="flex items-start justify-between">
                       <div
                         className={`flex h-12 w-12 items-center justify-center rounded-xl border border-${step.color}-400/10 bg-${step.color}-400/10`}
                       >
-                        <Icon
-                          className={`h-5 w-5 text-${step.color}-400`}
-                        />
+                        <Icon className={`h-5 w-5 text-${step.color}-400`} />
                       </div>
 
                       <span className="font-mono text-sm text-muted-foreground/50">
@@ -99,14 +91,11 @@ export default function HowItWorksPage() {
                       </span>
                     </div>
 
-                    <h2 className="mt-6 text-xl font-semibold">
-                      {step.title}
-                    </h2>
+                    <h2 className="mt-6 text-xl font-semibold">{step.title}</h2>
 
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
                       {step.description}
                     </p>
-
                   </CardContent>
                 </Card>
               );
@@ -114,11 +103,8 @@ export default function HowItWorksPage() {
           </div>
 
           {/* Existing glass-card-strong kept */}
-          <Card
-            className="glass-card-strong mt-8 p-0 text-center"
-          >
+          <Card className="glass-card-strong mt-8 p-0 text-center">
             <CardContent className="p-8">
-
               <Search className="mx-auto h-6 w-6 text-purple-400" />
 
               <h2 className="mt-4 text-2xl font-semibold">
@@ -132,17 +118,13 @@ export default function HowItWorksPage() {
 
               {/* Existing btn-primary kept */}
               <Link href="/">
-              <Button
-                className="mt-6 inline-flex items-center gap-2 p-6"
-              >
+                <Button className="btn-primary mt-6 inline-flex items-center gap-2 p-6">
                   Start Analysis
                   <Sparkles className="h-4 w-4" />
-              </Button>
-                </Link>
-
+                </Button>
+              </Link>
             </CardContent>
           </Card>
-
         </div>
       </section>
     </main>

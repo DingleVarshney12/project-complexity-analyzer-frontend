@@ -82,3 +82,11 @@ export type ProjectResponse = {
   skills_required: string[];
   complexity_signals: ComplexitySignals;
 };
+export type BuildIdeaResponse = {
+  projectDescription: string;
+  mainFeatures: string;
+  projectInput: string;
+  projectOutput: string;
+  platform: string;
+  technologies: string;
+};

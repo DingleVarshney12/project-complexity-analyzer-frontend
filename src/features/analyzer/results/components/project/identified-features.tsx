@@ -38,12 +38,10 @@ export default function IdentifiedFeatures({
 }: IdentifiedFeaturesProps) {
   const identifiedFeatures = features.map((featureName) => {
     const aiFeature = aiFeatures.find(
-      (feature) =>
-        feature.name.toLowerCase() === featureName.toLowerCase(),
+      (feature) => feature.name.toLowerCase() === featureName.toLowerCase(),
     );
 
-    const Icon =
-      featureIcons[featureName.toLowerCase()] ?? Package;
+    const Icon = featureIcons[featureName.toLowerCase()] ?? Package;
 
     return {
       title: aiFeature?.name ?? featureName,
@@ -77,10 +75,7 @@ export default function IdentifiedFeatures({
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {identifiedFeatures.map((feature) => (
-            <FeatureCard
-              key={feature.title}
-              {...feature}
-            />
+            <FeatureCard key={feature.title} {...feature} />
           ))}
         </div>
       </div>

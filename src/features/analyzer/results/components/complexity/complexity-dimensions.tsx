@@ -92,12 +92,9 @@ export default function ComplexityDimensions({
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {dimensionsWithScores.map((dimension) => (
-            <ComplexityDimensionCard
-              key={dimension.title}
-              {...dimension}
-            />
+            <ComplexityDimensionCard key={dimension.title} {...dimension} />
           ))}
         </div>
       </div>

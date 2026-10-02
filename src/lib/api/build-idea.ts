@@ -28,5 +28,5 @@ export async function generateBuildIdea(
     );
   }
 
-  return response.json();
+  return response as BuildIdeaResponse;
 }

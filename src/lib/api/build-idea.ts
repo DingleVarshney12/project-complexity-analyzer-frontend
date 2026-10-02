@@ -28,5 +28,5 @@ export async function generateBuildIdea(
     );
   }
 
-  return response as BuildIdeaResponse;
+  return result as BuildIdeaResponse;
 }

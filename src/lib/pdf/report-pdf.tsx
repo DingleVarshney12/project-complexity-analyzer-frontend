@@ -4,6 +4,10 @@ import type { ProjectResponse } from "@/lib/types";
 
 interface ReportPDFProps {
   result: ProjectResponse;
+  ownerDetails?: {
+    name: string | null;
+    email: string;
+  } | null;
 }
 
 const styles = StyleSheet.create({
@@ -566,9 +570,23 @@ const styles = StyleSheet.create({
     fontSize: 6.5,
     color: "#94a3b8",
   },
+  footerBrand: {
+    width: "26%",
+  },
+
+  footerOwner: {
+    flex: 1,
+    alignItems: "center",
+    textAlign: "center",
+  },
+
+  footerPage: {
+    width: "18%",
+    textAlign: "right",
+  },
 });
 
-export function ReportPDF({ result }: ReportPDFProps) {
+export function ReportPDF({ result, ownerDetails }: ReportPDFProps) {
   const complexityBadgeStyle =
     result.complexity === "Easy"
       ? styles.badgeEasy
@@ -1010,12 +1028,24 @@ export function ReportPDF({ result }: ReportPDFProps) {
         {/* ======================================================
             FOOTER
         ====================================================== */}
-
         <View fixed style={styles.footer}>
-          <Text style={styles.footerText}>Project Complexity Analyzer</Text>
+          <Text style={[styles.footerText, styles.footerBrand]}>
+            Project Complexity Analyzer
+          </Text>
+
+          {ownerDetails && (
+            <View style={styles.footerOwner}>
+              <Text style={styles.footerText}>
+                {ownerDetails.name?.trim()
+                  ? `Prepared for ${ownerDetails.name.trim()}`
+                  : "Prepared for project owner"}
+              </Text>
+              <Text style={styles.footerText}>{ownerDetails.email}</Text>
+            </View>
+          )}
 
           <Text
-            style={styles.footerText}
+            style={[styles.footerText, styles.footerPage]}
             render={({ pageNumber, totalPages }) =>
               `Page ${pageNumber} of ${totalPages}`
             }

@@ -1,23 +1,13 @@
-
 import type {
   ComplexityFactor,
   ComplexityLevel,
   ComplexityScale,
-  RequirementType,
   EvidenceType,
-  ProjectSummary,
   ProjectResponse,
+  ProjectSummary,
+  RequirementType,
 } from "@/lib/types";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-function getApiUrl() {
-  if (!API_URL) {
-    throw new Error("NEXT_PUBLIC_API_URL is not configured");
-  }
-
-  return API_URL;
-}
+import { apiRequest } from "./api-client";
 
 export type CreateProjectData = {
   name?: string | null;
@@ -40,7 +30,6 @@ export type ProjectApiResponse = {
   technologies: string;
   createdAt: string;
   updatedAt: string;
-
   analysis: {
     id: string;
     projectUid: string;
@@ -91,93 +80,53 @@ export type ProjectApiResponse = {
 export async function createProject(
   data: CreateProjectData,
 ): Promise<ProjectApiResponse> {
-  const response = await fetch(`${getApiUrl()}/projects`, {
+  return apiRequest<ProjectApiResponse>("/projects", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(data),
+    body: data,
+    fallbackMessage: "Failed to create and analyze the project.",
   });
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message ||
-        "Failed to create and analyze the project.",
-    );
-  }
-
-  return result;
 }
 
 export async function getProjects(): Promise<ProjectApiResponse[]> {
-  const response = await fetch(`${getApiUrl()}/projects`, {
+  return apiRequest<ProjectApiResponse[]>("/projects", {
     method: "GET",
-    credentials: "include",
+    fallbackMessage: "Failed to fetch projects.",
   });
+}
 
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to fetch projects.",
-    );
-  }
-
-  return result;
+export async function deleteProject(uid: string): Promise<void> {
+  return apiRequest<void>(`/projects/${encodeURIComponent(uid)}`, {
+    method: "DELETE",
+    fallbackMessage: "Failed to delete project.",
+  });
 }
 
 export async function renameProject(
   uid: string,
   name: string,
 ): Promise<ProjectApiResponse> {
-  const response = await fetch(
-    `${getApiUrl()}/projects/${uid}/name`,
+  return apiRequest<ProjectApiResponse>(
+    `/projects/${encodeURIComponent(uid)}/name`,
     {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ name }),
+      body: { name },
+      fallbackMessage: "Failed to rename project.",
     },
   );
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to rename project.",
-    );
-  }
-
-  return result;
 }
 
 export async function getProjectByUid(
   uid: string,
 ): Promise<ProjectApiResponse> {
-  const response = await fetch(`${getApiUrl()}/projects/${uid}`, {
-    method: "GET",
-    credentials: "include",
-    cache: "no-store",
-  });
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to load project.",
-    );
-  }
-
-  return result;
+  return apiRequest<ProjectApiResponse>(
+    `/projects/${encodeURIComponent(uid)}`,
+    {
+      method: "GET",
+      cache: "no-store",
+      fallbackMessage: "Failed to load project.",
+    },
+  );
 }
-
-
-
 
 export function mapProjectApiResponseToProjectResponse(
   project: ProjectApiResponse,
@@ -190,53 +139,21 @@ export function mapProjectApiResponseToProjectResponse(
 
   return {
     uid: project.uid,
-
+    project_name: project.name,
+    created_at: project.createdAt,
     complexity: analysis.complexity,
-
     score: analysis.score,
-
     confidence: analysis.confidence,
-
     reasons: analysis.reasons,
-
     factors: analysis.factors,
-
     dimensions: analysis.dimensions,
-
     features: analysis.features,
-
     technologies: analysis.technologies,
-
     project_summary: analysis.projectSummary,
-
     ai_features: analysis.aiFeatures,
-
     requirements: analysis.requirements,
-
     suggestions: analysis.suggestions,
-
     skills_required: analysis.skillsRequired,
-
     complexity_signals: analysis.complexitySignals,
   };
-}
-
-export async function deleteProject(
-  uid: string,
-): Promise<void> {
-  const response = await fetch(
-    `${getApiUrl()}/projects/${uid}`,
-    {
-      method: "DELETE",
-      credentials: "include",
-    },
-  );
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to delete project.",
-    );
-  }
 }

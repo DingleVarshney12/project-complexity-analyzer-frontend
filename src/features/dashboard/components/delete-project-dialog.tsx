@@ -1,9 +1,6 @@
 import { AlertTriangle, RefreshCw } from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 import type { ProjectApiResponse } from "@/lib/api/projects";
@@ -23,9 +20,7 @@ export default function DeleteProjectDialog({
   onClose,
   onDelete,
 }: DeleteProjectDialogProps) {
-  const projectName =
-    project?.name?.trim() ||
-    "this project";
+  const projectName = project?.name?.trim() || "this project";
 
   return (
     <Dialog
@@ -42,28 +37,22 @@ export default function DeleteProjectDialog({
             <AlertTriangle className="h-5 w-5 text-red-400" />
           </div>
 
-          <h2 className="mt-4 text-lg font-semibold">
-            Delete Project?
-          </h2>
+          <h2 className="mt-4 text-lg font-semibold">Delete Project?</h2>
 
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             Are you sure you want to delete{" "}
-            <span className="font-medium text-foreground">
-              {projectName}
-            </span>
-            ? This action cannot be undone.
+            <span className="font-medium text-foreground">{projectName}</span>?
+            This action cannot be undone.
           </p>
 
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            The project and its saved complexity analysis
-            will be permanently removed.
+            The project and its saved complexity analysis will be permanently
+            removed.
           </p>
 
           {error && (
             <div className="mt-4 rounded-lg border border-red-400/20 bg-red-400/10 px-3 py-2">
-              <p className="text-sm text-red-400">
-                {error}
-              </p>
+              <p className="text-sm text-red-400">{error}</p>
             </div>
           )}
         </div>

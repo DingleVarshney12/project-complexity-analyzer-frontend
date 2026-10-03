@@ -66,7 +66,9 @@ export type ComplexityFactor = {
 };
 
 export type ProjectResponse = {
-  uid:string;
+  uid: string;
+  project_name: string | null;
+  created_at: string;
   complexity: ComplexityLevel;
   score: number;
   confidence: number;

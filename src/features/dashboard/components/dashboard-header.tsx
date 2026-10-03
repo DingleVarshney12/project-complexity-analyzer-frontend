@@ -7,17 +7,14 @@ export default function DashboardHeader() {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p className="text-sm text-muted-foreground">
-          Dashboard
-        </p>
+        <p className="text-sm text-muted-foreground">Dashboard</p>
 
         <h1 className="mt-1 text-3xl font-semibold tracking-tight">
           Your Projects
         </h1>
 
         <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-          View and manage your projects and their complexity
-          analyses.
+          View and manage your projects and their complexity analyses.
         </p>
       </div>
 

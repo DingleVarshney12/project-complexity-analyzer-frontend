@@ -1,10 +1,5 @@
 import Link from "next/link";
-import {
-  Ellipsis,
-  FolderKanban,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { Ellipsis, FolderKanban, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {

@@ -1,2 +1,1 @@
-export const COMPANY_NAME = "Project Complexity Analyzer"
-
+export const COMPANY_NAME = "Project Complexity Analyzer";

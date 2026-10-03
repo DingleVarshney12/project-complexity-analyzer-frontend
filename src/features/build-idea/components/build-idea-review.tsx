@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import AnalysisError from "@/features/analyzer/components/analysis-error";
 
 import type { BuildIdeaResponse } from "@/lib/types";
 
@@ -15,19 +16,18 @@ interface BuildIdeaReviewProps {
   data: BuildIdeaResponse;
   onBack: () => void;
   onConfirm: (data: BuildIdeaResponse) => void;
+  analysisError?: string;
 }
 
 export default function BuildIdeaReview({
   data,
   onBack,
   onConfirm,
+  analysisError,
 }: BuildIdeaReviewProps) {
   const [formData, setFormData] = useState<BuildIdeaResponse>(data);
 
-  const updateField = (
-    field: keyof BuildIdeaResponse,
-    value: string,
-  ) => {
+  const updateField = (field: keyof BuildIdeaResponse, value: string) => {
     setFormData((current) => ({
       ...current,
       [field]: value,
@@ -46,26 +46,21 @@ export default function BuildIdeaReview({
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          We structured your idea using AI. Review the details and make
-          any changes before continuing.
+          We structured your idea using AI. Review the details and make any
+          changes before continuing.
         </p>
       </div>
 
       <div className="space-y-5">
         {/* Project Description */}
         <div className="space-y-2">
-          <Label htmlFor="project-description">
-            Project description
-          </Label>
+          <Label htmlFor="project-description">Project description</Label>
 
           <Textarea
             id="project-description"
             value={formData.projectDescription}
             onChange={(event) =>
-              updateField(
-                "projectDescription",
-                event.target.value,
-              )
+              updateField("projectDescription", event.target.value)
             }
             className="glass-input min-h-28 resize-y border-0 focus-visible:ring-1 focus-visible:ring-blue-500/50"
           />
@@ -73,18 +68,13 @@ export default function BuildIdeaReview({
 
         {/* Main Features */}
         <div className="space-y-2">
-          <Label htmlFor="main-features">
-            Main features
-          </Label>
+          <Label htmlFor="main-features">Main features</Label>
 
           <Textarea
             id="main-features"
             value={formData.mainFeatures}
             onChange={(event) =>
-              updateField(
-                "mainFeatures",
-                event.target.value,
-              )
+              updateField("mainFeatures", event.target.value)
             }
             className="glass-input min-h-28 resize-y border-0 focus-visible:ring-1 focus-visible:ring-blue-500/50"
           />
@@ -93,36 +83,26 @@ export default function BuildIdeaReview({
         {/* Input / Output */}
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="project-input">
-              Project input
-            </Label>
+            <Label htmlFor="project-input">Project input</Label>
 
             <Textarea
               id="project-input"
               value={formData.projectInput}
               onChange={(event) =>
-                updateField(
-                  "projectInput",
-                  event.target.value,
-                )
+                updateField("projectInput", event.target.value)
               }
               className="glass-input min-h-24 resize-y border-0 focus-visible:ring-1 focus-visible:ring-blue-500/50"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="project-output">
-              Project output
-            </Label>
+            <Label htmlFor="project-output">Project output</Label>
 
             <Textarea
               id="project-output"
               value={formData.projectOutput}
               onChange={(event) =>
-                updateField(
-                  "projectOutput",
-                  event.target.value,
-                )
+                updateField("projectOutput", event.target.value)
               }
               className="glass-input min-h-24 resize-y border-0 focus-visible:ring-1 focus-visible:ring-blue-500/50"
             />
@@ -132,43 +112,38 @@ export default function BuildIdeaReview({
         {/* Platform / Technologies */}
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="platform">
-              Platform
-            </Label>
+            <Label htmlFor="platform">Platform</Label>
 
             <Input
               id="platform"
               value={formData.platform}
-              onChange={(event) =>
-                updateField(
-                  "platform",
-                  event.target.value,
-                )
-              }
+              onChange={(event) => updateField("platform", event.target.value)}
               className="glass-input border-0 focus-visible:ring-1 focus-visible:ring-blue-500/50"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="technologies">
-              Technologies
-            </Label>
+            <Label htmlFor="technologies">Technologies</Label>
 
             <Input
               id="technologies"
               value={formData.technologies}
               onChange={(event) =>
-                updateField(
-                  "technologies",
-                  event.target.value,
-                )
+                updateField("technologies", event.target.value)
               }
               className="glass-input border-0 focus-visible:ring-1 focus-visible:ring-blue-500/50"
             />
           </div>
         </div>
       </div>
-
+      {analysisError && (
+        <div className="mt-6">
+          <AnalysisError
+            message={analysisError}
+            details="Your project details are still here. You can try again."
+          />
+        </div>
+      )}
       {/* Actions */}
       <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
         <Button
@@ -187,7 +162,7 @@ export default function BuildIdeaReview({
           className="btn-primary gap-2"
         >
           <Check className="h-4 w-4" />
-          Confirm & Analyze
+          {analysisError ? "Try Analysis Again" : "Confirm & Analyze"}
         </Button>
       </div>
     </Card>

@@ -1,20 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
 import { createProject } from "@/lib/api/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import AnalysisError from "./analysis-error";
 import {
   Card,
   CardContent,
@@ -28,16 +21,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
-
+import { useProjectAnalysis } from "@/features/analyzer/hooks/use-project-analysis";
 import AnalysisLoading from "./analysis-loader";
 
 export default function AnalyzerForm() {
   const [showAdditional, setShowAdditional] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
-
-  const router = useRouter();
-
+  const { isAnalyzing, activeStep, analysisError, analyzeProject } =
+    useProjectAnalysis();
   const [form, setForm] = useState({
     description: "",
     features: "",
@@ -56,51 +46,18 @@ export default function AnalyzerForm() {
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (!isFormValid) return;
 
-    setIsAnalyzing(true);
-    setActiveStep(1);
-
-   try {
-  setActiveStep(1);
-
-  await new Promise((resolve) => setTimeout(resolve, 700));
-
-  setActiveStep(2);
-
-  await new Promise((resolve) => setTimeout(resolve, 700));
-
-  setActiveStep(3);
-
-  const result = await createProject({
-    projectDescription: form.description,
-    mainFeatures: form.features,
-    projectInput: form.input,
-    projectOutput: form.output,
-    platform: form.platform,
-    technologies: form.technologies,
-  });
-
-  setActiveStep(4);
-
-  await new Promise((resolve) => setTimeout(resolve, 700));
-
-  setActiveStep(5);
-
-  router.push(`/results/${result.uid}`);
-} catch (error) {
-  console.error("Project analysis failed:", error);
-
-  setIsAnalyzing(false);
-  setActiveStep(1);
-
-  alert(
-    error instanceof Error
-      ? error.message
-      : "Something went wrong while analyzing your project.",
-  );
-}
+    await analyzeProject(() =>
+      createProject({
+        projectDescription: form.description,
+        mainFeatures: form.features,
+        projectInput: form.input,
+        projectOutput: form.output,
+        platform: form.platform,
+        technologies: form.technologies,
+      }),
+    );
   };
 
   const isFormValid =
@@ -305,32 +262,22 @@ Delivery tracking`}
                   <div className="mt-5 grid gap-5 rounded-xl border border-blue-300/10 bg-blue-950/10 p-4 sm:p-5 lg:grid-cols-2">
                     {/* Platform */}
                     <div className="grid gap-3">
-                      <Label htmlFor="platform">Platform</Label>
+                      <Label htmlFor="platform">Platforms</Label>
 
-                      <Select
+                      <Input
+                        id="platform"
+                        type="text"
                         value={form.platform}
-                        onValueChange={(value) =>
-                          updateField("platform", value ?? "")
+                        onChange={(event) =>
+                          updateField("platform", event.target.value)
                         }
-                      >
-                        <SelectTrigger id="platform" className="w-full">
-                          <SelectValue placeholder="Select platform" />
-                        </SelectTrigger>
+                        placeholder="e.g. Web, Mobile, Desktop, IoT"
+                        maxLength={500}
+                      />
 
-                        <SelectContent>
-                          <SelectItem value="web">Web Application</SelectItem>
-
-                          <SelectItem value="mobile">
-                            Mobile Application
-                          </SelectItem>
-
-                          <SelectItem value="desktop">Desktop</SelectItem>
-
-                          <SelectItem value="api">API</SelectItem>
-
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Add multiple platforms separated by commas.
+                      </p>
                     </div>
 
                     {/* Technologies */}
@@ -350,7 +297,12 @@ Delivery tracking`}
                   </div>
                 </CollapsibleContent>
               </Collapsible>
-
+              {analysisError && (
+                <AnalysisError
+                  message={analysisError}
+                  details="Your entered details are still here. You can try again."
+                />
+              )}
               {/* Actions */}
               <div className="flex flex-col items-center gap-3 pt-1 sm:flex-row sm:justify-end">
                 <p className="order-2 text-[11px] text-muted-foreground sm:order-1">
@@ -362,7 +314,7 @@ Delivery tracking`}
                   disabled={!isFormValid}
                   className="order-1 min-w-42.5 sm:order-2 p-4 btn-primary "
                 >
-                  Analyze Project
+                  {analysisError ? "Try Analysis Again" : "Analyze Project"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>

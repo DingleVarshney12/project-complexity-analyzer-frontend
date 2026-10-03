@@ -46,14 +46,17 @@ function GoogleIcon() {
 }
 
 export default function OAuthButtons() {
-
   const handleGoogleLogin = () => {
-  window.location.assign(`${getApiUrl()}/auth/google`);
-};
+    // OAuth requires a full-page redirect to the backend.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign(`${getApiUrl()}/auth/google`);
+  };
 
-const handleGithubLogin = () => {
-  window.location.assign(`${getApiUrl()}/auth/github`);
-};
+  const handleGithubLogin = () => {
+    // OAuth requires a full-page redirect to the backend.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign(`${getApiUrl()}/auth/github`);
+  };
   return (
     <div className="space-y-3">
       <Button

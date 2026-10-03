@@ -47,27 +47,27 @@ const skillIcons: Record<string, LucideIcon> = {
   "api development": Network,
   "rest api development": Network,
   "api integration": Network,
-  "authentication": KeyRound,
-  "authorization": ShieldCheck,
+  authentication: KeyRound,
+  authorization: ShieldCheck,
   "system design": Boxes,
   "software architecture": Boxes,
   "cloud deployment": Cloud,
   "cloud infrastructure": Cloud,
-  "devops": GitBranch,
-  "testing": TestTube,
+  devops: GitBranch,
+  testing: TestTube,
   "unit testing": TestTube,
   "integration testing": TestTube,
-  "caching": Cloud,
-  "security": ShieldCheck,
+  caching: Cloud,
+  security: ShieldCheck,
   "data modeling": Database,
   "data processing": Workflow,
   "data analytics": BarChart3,
   "machine learning": Brain,
   "artificial intelligence": Brain,
   "file storage": FolderOpen,
-  "search": Search,
+  search: Search,
   "search and filtering": Search,
-  "notifications": Bell,
+  notifications: Bell,
   "real time communication": Radio,
   "payment integration": CreditCard,
   "third party integration": Plug,
@@ -77,10 +77,10 @@ const skillIcons: Record<string, LucideIcon> = {
   "responsive design": Monitor,
   "state management": Boxes,
   "performance optimization": Gauge,
-  "scalability": TrendingUp,
+  scalability: TrendingUp,
   "logging and monitoring": Activity,
   "version control": GitBranch,
-  "containerization": Container,
+  containerization: Container,
   "data visualization": BarChart3,
   "ai integration": Brain,
   "firebase integration": Flame,
@@ -89,7 +89,6 @@ const skillIcons: Record<string, LucideIcon> = {
   "embedded system": Cpu,
   "sensor integration": Radio,
 };
-
 
 const skillDescriptions: Record<string, string> = {
   "frontend development":
@@ -110,13 +109,11 @@ const skillDescriptions: Record<string, string> = {
   "rest api development":
     "Design and implement RESTful APIs for application communication.",
 
-  "api integration":
-    "Connect the application with external services and APIs.",
+  "api integration": "Connect the application with external services and APIs.",
 
-  "authentication":
-    "Implement secure user identity and login workflows.",
+  authentication: "Implement secure user identity and login workflows.",
 
-  "authorization":
+  authorization:
     "Control access to resources based on user permissions and roles.",
 
   "system design":
@@ -131,10 +128,9 @@ const skillDescriptions: Record<string, string> = {
   "cloud infrastructure":
     "Configure and manage scalable cloud infrastructure and services.",
 
-  "devops":
-    "Automate development, deployment, and infrastructure workflows.",
+  devops: "Automate development, deployment, and infrastructure workflows.",
 
-  "testing":
+  testing:
     "Validate application behavior and reduce defects through automated and manual testing.",
 
   "unit testing":
@@ -143,10 +139,10 @@ const skillDescriptions: Record<string, string> = {
   "integration testing":
     "Verify that multiple application components work correctly together.",
 
-  "caching":
+  caching:
     "Improve application performance by efficiently storing frequently accessed data.",
 
-  "security":
+  security:
     "Protect application data, users, and services against security threats.",
 
   "data modeling":
@@ -167,13 +163,13 @@ const skillDescriptions: Record<string, string> = {
   "file storage":
     "Store, manage, and retrieve application files and uploaded resources.",
 
-  "search":
+  search:
     "Implement efficient search functionality for finding relevant application data.",
 
   "search and filtering":
     "Allow users to quickly find and filter relevant information.",
 
-  "notifications":
+  notifications:
     "Deliver timely updates, alerts, and messages to application users.",
 
   "real time communication":
@@ -203,7 +199,7 @@ const skillDescriptions: Record<string, string> = {
   "performance optimization":
     "Improve application speed, responsiveness, and resource efficiency.",
 
-  "scalability":
+  scalability:
     "Design systems that can handle increasing users, traffic, and workloads.",
 
   "logging and monitoring":
@@ -212,10 +208,10 @@ const skillDescriptions: Record<string, string> = {
   "version control":
     "Track code changes and collaborate safely across development workflows.",
 
-  "containerization":
+  containerization:
     "Package applications and dependencies into consistent, portable environments.",
 
-"data visualization":
+  "data visualization":
     "Transform application data into clear charts, graphs, and interactive visual reports.",
 
   "ai integration":
@@ -237,10 +233,7 @@ const skillDescriptions: Record<string, string> = {
     "Connect and process data from physical sensors within connected systems.",
 };
 
-
-export default function SkillsRequired({
-  skills,
-}: SkillsRequiredProps) {
+export default function SkillsRequired({ skills }: SkillsRequiredProps) {
   return (
     <section className="px-5 pb-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

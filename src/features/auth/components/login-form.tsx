@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import OAuthButtons from "./oauth-buttons";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -138,7 +137,7 @@ export default function LoginForm() {
             <Label htmlFor="password">Password</Label>
 
             <Link
-              href="#"
+              href="/forgot-password"
               className="text-xs text-blue-400 transition-colors hover:text-blue-300"
             >
               Forgot password?

@@ -7,9 +7,7 @@ interface ResultHeaderProps {
   result: ProjectResponse;
 }
 
-export default function ResultHeader({
-  result,
-}: ResultHeaderProps) {
+export default function ResultHeader({ result }: ResultHeaderProps) {
   return (
     <section className="px-5 pb-8 pt-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

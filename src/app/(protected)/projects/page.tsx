@@ -9,7 +9,8 @@ import {
   RefreshCw,
   Search,
 } from "lucide-react";
-
+import ProjectCompareBar from "@/features/projects/components/project-compare-bar";
+import { useProjectComparison } from "@/features/projects/hooks/use-project-comparison";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,12 +26,12 @@ import ProjectCard from "@/features/dashboard/components/project-card";
 import RenameProjectDialog from "@/features/dashboard/components/rename-project-dialog";
 import { useDashboardProjects } from "@/features/dashboard/hooks/use-dashboard-projects";
 import { useAuth } from "@/features/auth/context/auth-context";
-
 type ComplexityFilter = "all" | "easy" | "medium" | "hard";
 
 export default function ProjectsPage() {
   const { isLoading: isAuthLoading, isAuthenticated } = useAuth();
-
+  const { selectedProjectIds, toggleProject, clearSelection } =
+    useProjectComparison();
   const {
     projects,
     isLoading,
@@ -70,13 +71,11 @@ export default function ProjectsPage() {
         .join(" ")
         .toLowerCase();
 
-      const matchesSearch =
-        !query || searchableText.includes(query);
+      const matchesSearch = !query || searchableText.includes(query);
 
       const matchesComplexity =
         complexityFilter === "all" ||
-        project.analysis?.complexity.toLowerCase() ===
-          complexityFilter;
+        project.analysis?.complexity.toLowerCase() === complexityFilter;
 
       return matchesSearch && matchesComplexity;
     });
@@ -158,9 +157,7 @@ export default function ProjectsPage() {
                 <Input
                   type="search"
                   value={searchTerm}
-                  onChange={(event) =>
-                    setSearchTerm(event.target.value)
-                  }
+                  onChange={(event) => setSearchTerm(event.target.value)}
                   placeholder="Search projects..."
                   aria-label="Search projects"
                   className="h-10 border-blue-300/10 bg-[#070b18]/40 pl-9"
@@ -198,7 +195,11 @@ export default function ProjectsPage() {
               </p>
             )}
           </Card>
-
+          <ProjectCompareBar
+            selectedIds={selectedProjectIds}
+            scopeLabel="projects"
+            onClear={clearSelection}
+          />
           {isLoading && (
             <Card className="glass-card flex min-h-64 items-center justify-center p-8">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -240,9 +241,7 @@ export default function ProjectsPage() {
                 <FolderKanban className="h-5 w-5 text-blue-400" />
               </div>
 
-              <h2 className="mt-4 text-base font-medium">
-                No projects yet
-              </h2>
+              <h2 className="mt-4 text-base font-medium">No projects yet</h2>
 
               <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
                 Analyze your first project and it’ll be saved here.
@@ -287,20 +286,24 @@ export default function ProjectsPage() {
               </Card>
             )}
 
-          {!isLoading &&
-            !error &&
-            filteredProjects.length > 0 && (
-              <div className="grid gap-4">
-                {filteredProjects.map((project) => (
-                  <ProjectCard
-                    key={project.uid}
-                    project={project}
-                    onRename={openRenameDialog}
-                    onDelete={openDeleteDialog}
-                  />
-                ))}
-              </div>
-            )}
+          {!isLoading && !error && filteredProjects.length > 0 && (
+            <div className="grid gap-4">
+              {filteredProjects.map((project) => (
+                <ProjectCard
+                  key={project.uid}
+                  project={project}
+                  onRename={openRenameDialog}
+                  onDelete={openDeleteDialog}
+                  onToggleCompare={toggleProject}
+                  isSelected={selectedProjectIds.includes(project.uid)}
+                  compareDisabled={
+                    selectedProjectIds.length >= 2 &&
+                    !selectedProjectIds.includes(project.uid)
+                  }
+                />
+              ))}
+            </div>
+          )}
         </div>
       </main>
 

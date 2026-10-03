@@ -21,6 +21,8 @@ type ProjectsSectionProps = {
   onRetry: () => void;
   onRename: (project: ProjectApiResponse) => void;
   onDelete: (project: ProjectApiResponse) => void;
+  onToggleCompare: (uid: string) => void;
+  selectedProjectIds: string[];
 };
 
 export default function ProjectsSection({
@@ -30,6 +32,8 @@ export default function ProjectsSection({
   onRetry,
   onRename,
   onDelete,
+  onToggleCompare,
+  selectedProjectIds,
 }: ProjectsSectionProps) {
   const recentProjects = projects.slice(0, 5);
 
@@ -46,8 +50,8 @@ export default function ProjectsSection({
         {!isLoading && !error && projects.length > 0 && (
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground">
-              {projects.length}{" "}
-              {projects.length === 1 ? "project" : "projects"} total
+              {projects.length} {projects.length === 1 ? "project" : "projects"}{" "}
+              total
             </span>
 
             <Link
@@ -76,9 +80,7 @@ export default function ProjectsSection({
             <AlertCircle className="h-5 w-5 text-red-400" />
           </div>
 
-          <h3 className="mt-4 text-base font-medium">
-            Couldn’t load projects
-          </h3>
+          <h3 className="mt-4 text-base font-medium">Couldn’t load projects</h3>
 
           <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
             {error}
@@ -125,6 +127,12 @@ export default function ProjectsSection({
               project={project}
               onRename={onRename}
               onDelete={onDelete}
+              onToggleCompare={onToggleCompare}
+              isSelected={selectedProjectIds.includes(project.uid)}
+              compareDisabled={
+                selectedProjectIds.length >= 2 &&
+                !selectedProjectIds.includes(project.uid)
+              }
             />
           ))}
         </div>

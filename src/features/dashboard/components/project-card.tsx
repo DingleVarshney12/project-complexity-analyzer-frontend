@@ -15,12 +15,18 @@ type ProjectCardProps = {
   project: ProjectApiResponse;
   onRename: (project: ProjectApiResponse) => void;
   onDelete: (project: ProjectApiResponse) => void;
+  onToggleCompare: (uid: string) => void;
+  isSelected: boolean;
+  compareDisabled: boolean;
 };
 
 export default function ProjectCard({
   project,
   onRename,
   onDelete,
+  onToggleCompare,
+  isSelected,
+  compareDisabled,
 }: ProjectCardProps) {
   const analysis = project.analysis;
   const projectTitle = getProjectTitle(project);
@@ -30,6 +36,19 @@ export default function ProjectCard({
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0">
           <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              checked={isSelected}
+              disabled={!analysis || compareDisabled}
+              onChange={() => onToggleCompare(project.uid)}
+              aria-label={`Select ${projectTitle} to compare`}
+              title={
+                !analysis
+                  ? "This project has no analysis to compare"
+                  : undefined
+              }
+              className="mt-3 h-4 w-4 shrink-0 accent-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+            />
             <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-blue-400/20 bg-blue-400/10">
               <FolderKanban className="h-4 w-4 text-blue-400" />
             </div>
@@ -62,13 +81,9 @@ export default function ProjectCard({
               </div>
 
               <div className="text-center sm:min-w-16">
-                <p className="text-xl font-semibold">
-                  {analysis.score}
-                </p>
+                <p className="text-xl font-semibold">{analysis.score}</p>
 
-                <p className="text-[11px] text-muted-foreground">
-                  Score
-                </p>
+                <p className="text-[11px] text-muted-foreground">Score</p>
               </div>
             </>
           ) : (

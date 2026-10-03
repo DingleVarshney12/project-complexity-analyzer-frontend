@@ -1,13 +1,4 @@
-import { createApiError } from "./api-errors";
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-function getApiUrl() {
-  if (!API_URL) {
-    throw new Error("NEXT_PUBLIC_API_URL is not configured");
-  }
-
-  return API_URL;
-}
+import { apiRequest } from "./api-client";
 
 export type RegisterResponse = {
   message: string;
@@ -23,116 +14,91 @@ export type LoginResponse = {
   };
 };
 
+export type MessageResponse = {
+  message: string;
+};
+
 export async function registerUser(data: {
   name: string;
   email: string;
   password: string;
 }): Promise<RegisterResponse> {
-  const response = await fetch(
-    `${getApiUrl()}/auth/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    },
-  );
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Unable to create account",
-    );
-  }
-
-  return result;
-}
-
-export async function resendVerificationEmail(email: string) {
-  const response = await fetch(`${getApiUrl()}/auth/resend-verification`, {
+  return apiRequest<RegisterResponse>("/auth/register", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: email.trim() }),
+    body: data,
+    fallbackMessage: "Unable to create account.",
   });
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw createApiError(
-      response,
-      result,
-      "Unable to resend verification email."
-    );
-  }
-
-  return result;
 }
-export async function loginUser(data: {
+
+export async function resendVerificationEmail(
+  email: string,
+): Promise<MessageResponse> {
+  return apiRequest<MessageResponse>("/auth/resend-verification", {
+    method: "POST",
+    body: {
+      email: email.trim(),
+    },
+    fallbackMessage: "Unable to resend verification email.",
+  });
+}
+export async function loginUser(input: {
   email: string;
   password: string;
 }): Promise<LoginResponse> {
-  const response = await fetch(
-    `${getApiUrl()}/auth/login`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(data),
-    },
-  );
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-  throw createApiError(response, result, "Unable to login.");
+  return apiRequest<LoginResponse>("/auth/login", {
+    method: "POST",
+    body: input,
+    fallbackMessage: "Login failed. Please try again.",
+  });
 }
 
-  return result;
+export async function logoutUser(): Promise<void> {
+  return apiRequest<void>("/auth/logout", {
+    method: "POST",
+    fallbackMessage: "Logout failed. Please try again.",
+  });
 }
 
-export async function logoutUser(): Promise<{
-  message: string;
-}> {
-  const response = await fetch(
-    `${getApiUrl()}/auth/logout`,
-    {
-      method: "POST",
-      credentials: "include",
-    },
-  );
-
-  const result = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Unable to logout",
-    );
-  }
-
-  return result;
-}
-
-export async function verifyEmail(
-  token: string,
-): Promise<{ message: string }> {
-  const response = await fetch(
-    `${getApiUrl()}/auth/verify-email?token=${encodeURIComponent(token)}`,
+export async function verifyEmail(token: string): Promise<MessageResponse> {
+  return apiRequest<MessageResponse>(
+    `/auth/verify-email?token=${encodeURIComponent(token)}`,
     {
       method: "GET",
+      fallbackMessage: "Email verification failed.",
     },
   );
+}
 
-  const result = await response.json().catch(() => null);
+export async function updateProfile(data: {
+  name: string;
+}): Promise<MessageResponse> {
+  return apiRequest<MessageResponse>("/users/me/profile", {
+    method: "PATCH",
+    body: data,
+    fallbackMessage: "Unable to update your profile.",
+  });
+}
 
-  if (!response.ok) {
-    throw new Error(
-      result?.message || "Email verification failed",
-    );
-  }
+export async function forgotPassword(email: string): Promise<MessageResponse> {
+  return apiRequest<MessageResponse>("/auth/forgot-password", {
+    method: "POST",
+    body: {
+      email: email.trim(),
+    },
+    fallbackMessage: "Unable to request a password reset.",
+  });
+}
 
-  return result;
+export async function resetPassword(
+  token: string,
+  password: string,
+): Promise<MessageResponse> {
+  return apiRequest<MessageResponse>("/auth/reset-password", {
+    method: "POST",
+    body: {
+      token,
+      password,
+    },
+    fallbackMessage: "Unable to reset your password.",
+  });
 }

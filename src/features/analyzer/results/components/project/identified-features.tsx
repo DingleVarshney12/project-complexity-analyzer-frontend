@@ -49,9 +49,7 @@ export default function IdentifiedFeatures({
         aiFeature?.description ||
         "This feature was identified from the project requirements.",
       importance: (aiFeature?.importance ?? "medium").toUpperCase() as
-        | "LOW"
-        | "MEDIUM"
-        | "HIGH",
+        "LOW" | "MEDIUM" | "HIGH",
       icon: Icon,
     };
   });

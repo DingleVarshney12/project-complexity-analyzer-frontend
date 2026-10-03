@@ -8,10 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  registerUser,
-  resendVerificationEmail,
-} from "@/lib/api/auth";
+import { registerUser, resendVerificationEmail } from "@/lib/api/auth";
 import { toast } from "@/components/ui/toast";
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -23,7 +20,7 @@ export default function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-const [isResending, setIsResending] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -70,33 +67,33 @@ const [isResending, setIsResending] = useState(false);
       setIsLoading(false);
     }
   };
-const handleResendVerification = async () => {
-  const normalizedEmail = email.trim();
+  const handleResendVerification = async () => {
+    const normalizedEmail = email.trim();
 
-  if (!normalizedEmail || isResending) return;
+    if (!normalizedEmail || isResending) return;
 
-  setIsResending(true);
+    setIsResending(true);
 
-  try {
-    const result = await resendVerificationEmail(normalizedEmail);
+    try {
+      const result = await resendVerificationEmail(normalizedEmail);
 
-    toast.add({
-      title: "Verification email sent",
-      description:
-        result?.message || "Check your inbox and spam folder for the link.",
-      type: "success",
-    });
-  } catch (error) {
-    toast.add({
-      title: "Unable to resend email",
-      description:
-        error instanceof Error ? error.message : "Please try again.",
-      type: "error",
-    });
-  } finally {
-    setIsResending(false);
-  }
-};
+      toast.add({
+        title: "Verification email sent",
+        description:
+          result?.message || "Check your inbox and spam folder for the link.",
+        type: "success",
+      });
+    } catch (error) {
+      toast.add({
+        title: "Unable to resend email",
+        description:
+          error instanceof Error ? error.message : "Please try again.",
+        type: "error",
+      });
+    } finally {
+      setIsResending(false);
+    }
+  };
   return (
     <Card className="glass-card-strong w-full p-6 sm:p-8">
       <div className="mb-8 text-center">
@@ -278,20 +275,20 @@ const handleResendVerification = async () => {
         </Link>
       </div>
       <div className="mt-5 text-center">
-  <p className="text-sm text-muted-foreground">
-    Already registered but didn&apos;t receive the email?
-  </p>
+        <p className="text-sm text-muted-foreground">
+          Already registered but didn&apos;t receive the email?
+        </p>
 
-  <Button
-    type="button"
-    variant="ghost"
-    onClick={handleResendVerification}
-    disabled={!email.trim() || isLoading || isResending}
-    className="mt-1 text-blue-400 hover:text-blue-300"
-  >
-    {isResending ? "Sending..." : "Resend verification email"}
-  </Button>
-</div>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={handleResendVerification}
+          disabled={!email.trim() || isLoading || isResending}
+          className="mt-1 text-blue-400 hover:text-blue-300"
+        >
+          {isResending ? "Sending..." : "Resend verification email"}
+        </Button>
+      </div>
     </Card>
   );
 }

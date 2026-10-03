@@ -3,7 +3,10 @@
 import { useParams, useRouter } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 
-import { getProjectByUid ,mapProjectApiResponseToProjectResponse} from "@/lib/api/projects";
+import {
+  getProjectByUid,
+  mapProjectApiResponseToProjectResponse,
+} from "@/lib/api/projects";
 
 import { useEffect, useState } from "react";
 
@@ -27,53 +30,50 @@ export default function ResultPage() {
 
   const uid = params.id as string;
 
-  const [project, setProject] =
-  useState<ProjectResponse | null>(null);
+  const [project, setProject] = useState<ProjectResponse | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-  if (!uid) return;
+    if (!uid) return;
 
-  let isMounted = true;
+    let isMounted = true;
 
-  async function loadProject() {
-    setIsLoading(true);
-    setError("");
+    async function loadProject() {
+      setIsLoading(true);
+      setError("");
 
-    try {
-      const apiProject = await getProjectByUid(uid);
+      try {
+        const apiProject = await getProjectByUid(uid);
 
-      const mappedProject =
-        mapProjectApiResponseToProjectResponse(apiProject);
+        const mappedProject =
+          mapProjectApiResponseToProjectResponse(apiProject);
 
-      if (isMounted) {
-        setProject(mappedProject);
-      }
-    } catch (error) {
-      console.error("Failed to load project:", error);
+        if (isMounted) {
+          setProject(mappedProject);
+        }
+      } catch (error) {
+        console.error("Failed to load project:", error);
 
-      if (isMounted) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "Failed to load project.",
-        );
-      }
-    } finally {
-      if (isMounted) {
-        setIsLoading(false);
+        if (isMounted) {
+          setError(
+            error instanceof Error ? error.message : "Failed to load project.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
-  }
 
-  loadProject();
+    loadProject();
 
-  return () => {
-    isMounted = false;
-  };
-}, [uid]);
+    return () => {
+      isMounted = false;
+    };
+  }, [uid]);
   if (isLoading) {
     return (
       <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-5">
@@ -88,9 +88,7 @@ export default function ResultPage() {
   if (error || !project) {
     return (
       <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-5 text-center">
-        <h1 className="text-xl font-semibold">
-          Unable to load project
-        </h1>
+        <h1 className="text-xl font-semibold">Unable to load project</h1>
 
         <p className="mt-2 max-w-md text-sm text-muted-foreground">
           {error || "This project does not exist."}
@@ -111,9 +109,7 @@ export default function ResultPage() {
     return (
       <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-5 text-center">
         <div>
-          <h1 className="text-xl font-semibold">
-            Analysis unavailable
-          </h1>
+          <h1 className="text-xl font-semibold">Analysis unavailable</h1>
 
           <p className="mt-2 text-sm text-muted-foreground">
             This project does not have a completed analysis yet.

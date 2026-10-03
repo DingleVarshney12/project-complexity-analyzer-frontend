@@ -1,8 +1,4 @@
-import {
-  ArrowRight,
-  CheckCircle2,
-  Lightbulb,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Lightbulb } from "lucide-react";
 
 import type { ProjectResponse } from "@/lib/types";
 
@@ -10,9 +6,7 @@ interface RecommendationsProps {
   suggestions: ProjectResponse["suggestions"];
 }
 
-export default function Recommendations({
-  suggestions,
-}: RecommendationsProps) {
+export default function Recommendations({ suggestions }: RecommendationsProps) {
   return (
     <section className="px-5 pb-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -33,10 +27,7 @@ export default function Recommendations({
         <div className="space-y-4">
           {suggestions.length > 0 ? (
             suggestions.map((item, index) => (
-              <div
-                key={item.name}
-                className="glass-card group p-6"
-              >
+              <div key={item.name} className="glass-card group p-6">
                 <div className="flex flex-col gap-5 sm:flex-row">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-400/10 bg-blue-400/10">
                     <span className="text-sm font-bold text-blue-400">

@@ -2,7 +2,7 @@
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Download, Loader2 } from "lucide-react";
-import {Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import type { ProjectResponse } from "@/lib/types";
 import { ReportPDF } from "@/lib/pdf/report-pdf";
 
@@ -10,13 +10,21 @@ interface DownloadReportProps {
   result: ProjectResponse;
 }
 
-export default function DownloadReport({
-  result,
-}: DownloadReportProps) {
+export default function DownloadReport({ result }: DownloadReportProps) {
+  const projectName =
+    result.project_name || result.project_summary.type || "project";
+
+  const safeFileName =
+    projectName
+      .normalize("NFKD")
+      .replace(/[^\w\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .toLowerCase() || "project";
   return (
     <PDFDownloadLink
       document={<ReportPDF result={result} />}
-      fileName="project-complexity-report.pdf"
+      fileName={`${safeFileName}-complexity-report.pdf`}
     >
       {({ loading }) => (
         <Button

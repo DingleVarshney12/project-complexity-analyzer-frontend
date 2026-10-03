@@ -52,9 +52,7 @@ export function createApiError(
   return new ApiError(
     message,
     response.status,
-    typeof body.code === "string"
-      ? body.code
-      : codeForStatus(response.status),
+    typeof body.code === "string" ? body.code : codeForStatus(response.status),
     body.details ?? (Array.isArray(rawMessage) ? rawMessage : null),
   );
 }

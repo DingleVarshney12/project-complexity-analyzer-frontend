@@ -8,9 +8,8 @@ import {
   useState,
 } from "react";
 
+import { apiRequest } from "@/lib/api/api-client";
 import { logoutUser } from "@/lib/api/auth";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export type AuthUser = {
   id: string;
@@ -27,37 +26,20 @@ type AuthContextValue = {
   refreshUser: () => Promise<void>;
 };
 
-const AuthContext =
-  createContext<AuthContextValue | undefined>(undefined);
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export function AuthProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  async function fetchCurrentUser(): Promise<AuthUser> {
+    return apiRequest<AuthUser>("/auth/me", {
+      method: "GET",
+      fallbackMessage: "Unable to load your account.",
+    });
+  }
   const refreshUser = useCallback(async () => {
-    if (!API_URL) {
-      setUser(null);
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const response = await fetch(`${API_URL}/auth/me`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        setUser(null);
-        return;
-      }
-
-      const data: AuthUser = await response.json();
-      setUser(data);
+      setUser(await fetchCurrentUser());
     } catch {
       setUser(null);
     } finally {
@@ -68,52 +50,23 @@ export function AuthProvider({
   useEffect(() => {
     let cancelled = false;
 
-    const fetchInitialUser = async () => {
-      if (!API_URL) {
-        if (!cancelled) {
-          setUser(null);
-          setIsLoading(false);
-        }
-
-        return;
-      }
-
+    const loadUser = async () => {
       try {
-        const response = await fetch(`${API_URL}/auth/me`, {
-          method: "GET",
-          credentials: "include",
-        });
-
-        if (cancelled) return;
-
-        if (!response.ok) {
-          setUser(null);
-          return;
-        }
-
-        const data: AuthUser = await response.json();
-
-        if (!cancelled) {
-          setUser(data);
-        }
+        const data = await fetchCurrentUser();
+        if (!cancelled) setUser(data);
       } catch {
-        if (!cancelled) {
-          setUser(null);
-        }
+        if (!cancelled) setUser(null);
       } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
+        if (!cancelled) setIsLoading(false);
       }
     };
 
-    void fetchInitialUser();
+    void loadUser();
 
     return () => {
       cancelled = true;
     };
   }, []);
-
   const logout = async () => {
     try {
       await logoutUser();
@@ -137,14 +90,11 @@ export function AuthProvider({
   );
 }
 
-
 export function useAuth() {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error(
-      "useAuth must be used inside AuthProvider",
-    );
+    throw new Error("useAuth must be used inside AuthProvider");
   }
 
   return context;

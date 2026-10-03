@@ -1,8 +1,4 @@
-import {
-  Goal,
-  Layers3,
-  ShoppingBag,
-} from "lucide-react";
+import { Goal, Layers3, ShoppingBag } from "lucide-react";
 
 import type { ProjectResponse } from "@/lib/types";
 
@@ -21,9 +17,7 @@ export default function ProjectSummary({
   summary,
   complexitySignals,
 }: ProjectSummaryProps) {
-  const scopeLabel = getScopeLabel(
-    complexitySignals.functional_scope,
-  );
+  const scopeLabel = getScopeLabel(complexitySignals.functional_scope);
 
   return (
     <section className="px-5 pb-8 sm:px-6 lg:px-8">
@@ -84,9 +78,7 @@ export default function ProjectSummary({
                 Estimated Scope
               </p>
 
-              <p className="mt-2 text-lg font-semibold">
-                {scopeLabel}
-              </p>
+              <p className="mt-2 text-lg font-semibold">{scopeLabel}</p>
             </div>
           </div>
 

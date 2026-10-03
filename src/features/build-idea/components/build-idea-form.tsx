@@ -2,29 +2,26 @@
 
 import { useState } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { createProject } from "@/lib/api/projects";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-import { generateBuildIdea } from "@/lib/api/build-idea";
+import AnalysisLoading from "@/features/analyzer/components/analysis-loader";
+import { useProjectAnalysis } from "@/features/analyzer/hooks/use-project-analysis";
 import type { BuildIdeaResponse } from "@/lib/types";
-import { useRouter } from "next/navigation";
+import { createProject } from "@/lib/api/projects";
+import { generateBuildIdea } from "@/lib/api/build-idea";
 import BuildIdeaReview from "./build-idea-review";
-import AnalysisLoading from "../../analyzer/components/analysis-loader";
-
 const MAX_LENGTH = 5000;
 
 export default function BuildIdeaForm() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
-  const router = useRouter();
+  const { isAnalyzing, activeStep, analysisError, analyzeProject } =
+    useProjectAnalysis();
   const [result, setResult] = useState<BuildIdeaResponse | null>(null);
-
   const handleSubmit = async () => {
     const trimmedPrompt = prompt.trim();
 
@@ -37,7 +34,7 @@ export default function BuildIdeaForm() {
       const data = await generateBuildIdea(trimmedPrompt);
 
       setResult(data);
-    } catch (error:unknown) {
+    } catch (error: unknown) {
       console.error(error);
       setError(
         error instanceof Error
@@ -55,55 +52,16 @@ export default function BuildIdeaForm() {
   };
 
   const handleConfirm = async (data: BuildIdeaResponse) => {
-    setIsAnalyzing(true);
-    setActiveStep(1);
-
-    try {
-      // Step 1
-      setActiveStep(1);
-
-      await new Promise((resolve) => setTimeout(resolve, 700));
-
-      // Step 2
-      setActiveStep(2);
-
-      await new Promise((resolve) => setTimeout(resolve, 700));
-
-      // Step 3 - Create / analyze project
-      setActiveStep(3);
-
-      const res = await createProject({
+    await analyzeProject(() =>
+      createProject({
         projectDescription: data.projectDescription,
         mainFeatures: data.mainFeatures,
         projectInput: data.projectInput,
         projectOutput: data.projectOutput,
         platform: data.platform,
         technologies: data.technologies,
-      });
-
-      // Step 4
-      setActiveStep(4);
-
-      await new Promise((resolve) => setTimeout(resolve, 700));
-
-      // Step 5
-      setActiveStep(5);
-
-      await new Promise((resolve) => setTimeout(resolve, 700));
-
-      router.push(`/results/${res.uid}`);
-    } catch (error) {
-      console.error("Project creation failed:", error);
-
-      setIsAnalyzing(false);
-      setActiveStep(1);
-
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong while analyzing your project.",
-      );
-    }
+      }),
+    );
   };
 
   /*
@@ -130,6 +88,7 @@ export default function BuildIdeaForm() {
         data={result}
         onBack={handleBack}
         onConfirm={handleConfirm}
+        analysisError={analysisError}
       />
     );
   }
@@ -146,8 +105,8 @@ export default function BuildIdeaForm() {
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Tell us what you want to build in your own words. You don&apos;t need to
-          structure the information yourself.
+          Tell us what you want to build in your own words. You don&apos;t need
+          to structure the information yourself.
         </p>
       </div>
 

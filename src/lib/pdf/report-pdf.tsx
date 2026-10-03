@@ -1,10 +1,4 @@
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 import type { ProjectResponse } from "@/lib/types";
 
@@ -68,7 +62,12 @@ const styles = StyleSheet.create({
     color: "#64748b",
     marginTop: 3,
   },
-
+  projectName: {
+    fontSize: 11,
+    fontWeight: "bold",
+    color: "#ffffff",
+    marginTop: 10,
+  },
   // ============================================================
   // SCORE SECTION
   // ============================================================
@@ -659,16 +658,19 @@ export function ReportPDF({ result }: ReportPDFProps) {
               <Text style={styles.headerSubtitle}>
                 AI-powered software project analysis report
               </Text>
-            </View>
-
-            <View>
-              <Text style={styles.reportLabel}>
-                Analysis Report
+              <Text style={styles.projectName}>
+                {result.project_name ||
+                  result.project_summary.type ||
+                  "Untitled project"}
               </Text>
+            </View>
+            <View>
+              <Text style={styles.reportLabel}>Analysis Report</Text>
 
               <Text style={styles.reportDate}>
-                Project ID: {result.uid}
+                Created: {new Date(result.created_at).toLocaleDateString()}
               </Text>
+              <Text style={styles.reportDate}>Project ID: {result.uid}</Text>
             </View>
           </View>
         </View>
@@ -681,13 +683,9 @@ export function ReportPDF({ result }: ReportPDFProps) {
           <View style={styles.scoreCard}>
             <Text style={styles.scoreLabel}>Complexity Score</Text>
 
-            <Text style={styles.scoreValue}>
-              {result.score}
-            </Text>
+            <Text style={styles.scoreValue}>{result.score}</Text>
 
-            <Text style={styles.scoreOutOf}>
-              out of 100
-            </Text>
+            <Text style={styles.scoreOutOf}>out of 100</Text>
 
             <Text style={styles.confidence}>
               AI Confidence: {Math.round(result.confidence * 100)}%
@@ -695,26 +693,19 @@ export function ReportPDF({ result }: ReportPDFProps) {
           </View>
 
           <View style={styles.complexityCard}>
-            <Text style={styles.complexityLabel}>
-              Overall Complexity
-            </Text>
+            <Text style={styles.complexityLabel}>Overall Complexity</Text>
 
             <Text style={styles.complexityTitle}>
               {result.complexity} Level
             </Text>
 
             <Text style={styles.complexityDescription}>
-              Based on the project&apos;s technical requirements,
-              functional scope, integrations, data handling,
-              security considerations, and external services.
+              Based on the project&apos;s technical requirements, functional
+              scope, integrations, data handling, security considerations, and
+              external services.
             </Text>
 
-            <View
-              style={[
-                styles.badge,
-                complexityBadgeStyle,
-              ]}
-            >
+            <View style={[styles.badge, complexityBadgeStyle]}>
               <Text style={styles.badgeText}>
                 {result.complexity.toUpperCase()}
               </Text>
@@ -727,9 +718,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
         ====================================================== */}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            Project Summary
-          </Text>
+          <Text style={styles.sectionTitle}>Project Summary</Text>
 
           <View style={styles.sectionDivider} />
 
@@ -743,9 +732,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
             </Text>
 
             <View style={styles.objectiveBox}>
-              <Text style={styles.objectiveLabel}>
-                Core Objective
-              </Text>
+              <Text style={styles.objectiveLabel}>Core Objective</Text>
 
               <Text style={styles.objectiveText}>
                 {result.project_summary.core_objective}
@@ -760,13 +747,11 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
         {result.ai_features.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              AI-Identified Features
-            </Text>
+            <Text style={styles.sectionTitle}>AI-Identified Features</Text>
 
             <Text style={styles.sectionDescription}>
-              Key functional capabilities identified from the
-              project description and requirements.
+              Key functional capabilities identified from the project
+              description and requirements.
             </Text>
 
             <View style={styles.featureGrid}>
@@ -776,9 +761,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
                   style={styles.featureCard}
                   wrap={false}
                 >
-                  <Text style={styles.featureName}>
-                    {feature.name}
-                  </Text>
+                  <Text style={styles.featureName}>{feature.name}</Text>
 
                   <Text style={styles.featureDescription}>
                     {feature.description}
@@ -817,9 +800,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
         {result.technologies.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              Technology Stack
-            </Text>
+            <Text style={styles.sectionTitle}>Technology Stack</Text>
 
             <Text style={styles.sectionDescription}>
               Technologies explicitly associated with the project.
@@ -827,13 +808,8 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
             <View style={styles.techGrid}>
               {result.technologies.map((technology) => (
-                <View
-                  key={technology}
-                  style={styles.techBadge}
-                >
-                  <Text style={styles.techText}>
-                    {technology}
-                  </Text>
+                <View key={technology} style={styles.techBadge}>
+                  <Text style={styles.techText}>{technology}</Text>
                 </View>
               ))}
             </View>
@@ -845,23 +821,18 @@ export function ReportPDF({ result }: ReportPDFProps) {
         ====================================================== */}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            Complexity Dimensions
-          </Text>
+          <Text style={styles.sectionTitle}>Complexity Dimensions</Text>
 
           <Text style={styles.sectionDescription}>
-            Contribution of each dimension to the project&apos;s
-            overall complexity score.
+            Contribution of each dimension to the project&apos;s overall
+            complexity score.
           </Text>
 
           <View style={styles.dimensionGrid}>
             {dimensions.map((dimension) => {
               const percentage = Math.min(
-                Math.max(
-                  (dimension.value / dimension.max) * 100,
-                  0
-                ),
-                100
+                Math.max((dimension.value / dimension.max) * 100, 0),
+                100,
               );
 
               return (
@@ -871,13 +842,9 @@ export function ReportPDF({ result }: ReportPDFProps) {
                   wrap={false}
                 >
                   <View style={styles.dimensionHeader}>
-                    <Text style={styles.dimensionName}>
-                      {dimension.label}
-                    </Text>
+                    <Text style={styles.dimensionName}>{dimension.label}</Text>
 
-                    <Text style={styles.dimensionValue}>
-                      {dimension.value}
-                    </Text>
+                    <Text style={styles.dimensionValue}>{dimension.value}</Text>
                   </View>
 
                   <View style={styles.dimensionBar}>
@@ -902,13 +869,10 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
         {result.requirements.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              Project Requirements
-            </Text>
+            <Text style={styles.sectionTitle}>Project Requirements</Text>
 
             <Text style={styles.sectionDescription}>
-              Functional and technical requirements identified
-              during analysis.
+              Functional and technical requirements identified during analysis.
             </Text>
 
             {result.requirements.map((requirement) => (
@@ -922,9 +886,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
                     {requirement.requirement}
                   </Text>
 
-                  <Text style={styles.requirementType}>
-                    {requirement.type}
-                  </Text>
+                  <Text style={styles.requirementType}>{requirement.type}</Text>
                 </View>
 
                 <Text style={styles.requirementDescription}>
@@ -941,13 +903,11 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
         {result.suggestions.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              AI Recommendations
-            </Text>
+            <Text style={styles.sectionTitle}>AI Recommendations</Text>
 
             <Text style={styles.sectionDescription}>
-              Suggestions generated to help with implementation,
-              architecture, and project planning.
+              Suggestions generated to help with implementation, architecture,
+              and project planning.
             </Text>
 
             {result.suggestions.map((suggestion) => (
@@ -956,9 +916,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
                 style={styles.suggestionCard}
                 wrap={false}
               >
-                <Text style={styles.suggestionName}>
-                  {suggestion.name}
-                </Text>
+                <Text style={styles.suggestionName}>{suggestion.name}</Text>
 
                 <Text style={styles.suggestionDescription}>
                   {suggestion.description}
@@ -978,24 +936,17 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
         {result.skills_required.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              Skills Required
-            </Text>
+            <Text style={styles.sectionTitle}>Skills Required</Text>
 
             <Text style={styles.sectionDescription}>
-              Technical skills that may be useful for building
-              and maintaining this project.
+              Technical skills that may be useful for building and maintaining
+              this project.
             </Text>
 
             <View style={styles.skillGrid}>
               {result.skills_required.map((skill) => (
-                <View
-                  key={skill}
-                  style={styles.skillBadge}
-                >
-                  <Text style={styles.skillText}>
-                    {skill}
-                  </Text>
+                <View key={skill} style={styles.skillBadge}>
+                  <Text style={styles.skillText}>{skill}</Text>
                 </View>
               ))}
             </View>
@@ -1007,25 +958,17 @@ export function ReportPDF({ result }: ReportPDFProps) {
         ====================================================== */}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            Complexity Signals
-          </Text>
+          <Text style={styles.sectionTitle}>Complexity Signals</Text>
 
           <Text style={styles.sectionDescription}>
-            Normalized signals used by the analyzer to understand
-            different aspects of the project.
+            Normalized signals used by the analyzer to understand different
+            aspects of the project.
           </Text>
 
           <View style={styles.signalGrid}>
             {signals.map((signal) => (
-              <View
-                key={signal.label}
-                style={styles.signalCard}
-                wrap={false}
-              >
-                <Text style={styles.signalLabel}>
-                  {signal.label}
-                </Text>
+              <View key={signal.label} style={styles.signalCard} wrap={false}>
+                <Text style={styles.signalLabel}>{signal.label}</Text>
 
                 <Text style={styles.signalValue}>
                   {typeof signal.value === "string"
@@ -1043,13 +986,11 @@ export function ReportPDF({ result }: ReportPDFProps) {
 
         {result.reasons.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              Why This Complexity Score?
-            </Text>
+            <Text style={styles.sectionTitle}>Why This Complexity Score?</Text>
 
             <Text style={styles.sectionDescription}>
-              Main factors considered when determining the
-              project&apos;s overall complexity.
+              Main factors considered when determining the project&apos;s
+              overall complexity.
             </Text>
 
             {result.reasons.map((reason, index) => (
@@ -1058,13 +999,9 @@ export function ReportPDF({ result }: ReportPDFProps) {
                 style={styles.reasonCard}
                 wrap={false}
               >
-                <Text style={styles.reasonNumber}>
-                  {index + 1}
-                </Text>
+                <Text style={styles.reasonNumber}>{index + 1}</Text>
 
-                <Text style={styles.reasonText}>
-                  {reason}
-                </Text>
+                <Text style={styles.reasonText}>{reason}</Text>
               </View>
             ))}
           </View>
@@ -1075,9 +1012,7 @@ export function ReportPDF({ result }: ReportPDFProps) {
         ====================================================== */}
 
         <View fixed style={styles.footer}>
-          <Text style={styles.footerText}>
-            Project Complexity Analyzer
-          </Text>
+          <Text style={styles.footerText}>Project Complexity Analyzer</Text>
 
           <Text
             style={styles.footerText}

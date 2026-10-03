@@ -4,11 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth/context/auth-context";
 
-export default function ProtectedRoute({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();

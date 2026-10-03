@@ -3,11 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import {
-  CheckCircle2,
-  Loader2,
-  XCircle,
-} from "lucide-react";
+import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,15 +16,12 @@ function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const [state, setState] =
-    useState<VerificationState>(
-      token ? "loading" : "error",
-    );
+  const [state, setState] = useState<VerificationState>(
+    token ? "loading" : "error",
+  );
 
   const [message, setMessage] = useState(
-    token
-      ? "Verifying your email..."
-      : "Verification token is missing.",
+    token ? "Verifying your email..." : "Verification token is missing.",
   );
 
   useEffect(() => {
@@ -42,15 +35,12 @@ function VerifyEmailContent() {
 
         setState("success");
         setMessage(
-          result.message ||
-            "Your email has been verified successfully.",
+          result.message || "Your email has been verified successfully.",
         );
       } catch (error: unknown) {
         setState("error");
         setMessage(
-          error instanceof Error
-            ? error.message
-            : "Email verification failed.",
+          error instanceof Error ? error.message : "Email verification failed.",
         );
       }
     };
@@ -71,9 +61,7 @@ function VerifyEmailContent() {
               <CheckCircle2 className="h-6 w-6 text-emerald-400" />
             )}
 
-            {state === "error" && (
-              <XCircle className="h-6 w-6 text-red-400" />
-            )}
+            {state === "error" && <XCircle className="h-6 w-6 text-red-400" />}
           </div>
 
           <h1 className="text-2xl font-semibold tracking-tight">
@@ -93,10 +81,7 @@ function VerifyEmailContent() {
           )}
 
           {state === "error" && (
-            <Button
-              variant="outline"
-              className="mt-6 w-full"
-            >
+            <Button variant="outline" className="mt-6 w-full">
               <Link href="/login">Back to Login</Link>
             </Button>
           )}

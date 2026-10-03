@@ -1,8 +1,6 @@
 import type { ProjectApiResponse } from "@/lib/api/projects";
 
-export function getComplexityClass(
-  complexity: string | undefined,
-): string {
+export function getComplexityClass(complexity: string | undefined): string {
   switch (complexity) {
     case "Easy":
       return "border-emerald-400/20 bg-emerald-400/10 text-emerald-400";
@@ -26,9 +24,7 @@ export function formatDate(date: string): string {
   });
 }
 
-export function getProjectTitle(
-  project: ProjectApiResponse,
-): string {
+export function getProjectTitle(project: ProjectApiResponse): string {
   return (
     project.name?.trim() ||
     project.analysis?.projectSummary?.type ||
@@ -36,27 +32,19 @@ export function getProjectTitle(
   );
 }
 
-export function calculateDashboardStats(
-  projects: ProjectApiResponse[],
-) {
+export function calculateDashboardStats(projects: ProjectApiResponse[]) {
   const analyzedProjects = projects.filter(
     (project) => project.analysis !== null,
   );
 
   const scores = analyzedProjects
     .map((project) => project.analysis?.score)
-    .filter(
-      (score): score is number =>
-        typeof score === "number",
-    );
+    .filter((score): score is number => typeof score === "number");
 
   const averageScore =
     scores.length > 0
       ? Math.round(
-          scores.reduce(
-            (total, score) => total + score,
-            0,
-          ) / scores.length,
+          scores.reduce((total, score) => total + score, 0) / scores.length,
         )
       : null;
 
